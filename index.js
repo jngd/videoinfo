@@ -3,8 +3,10 @@ const ffmpeg = require('fluent-ffmpeg');
 
 const { app, BrowserWindow, ipcMain } = electron;
 
+let mainWindow;
+
 app.on('ready', () => {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
     },
@@ -18,6 +20,6 @@ ipcMain.on('video:submit', (event, path) => {
       return;
     }
 
-    console.log('File duration', metadata.format.duration);
+    mainWindow.webContents.send('video:metadata', metadata.format.duration);
   });
 });
